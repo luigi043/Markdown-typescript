@@ -1,0 +1,59 @@
+ body {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background: #f4f4f4;
+    }
+    .toolbar, .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      background: #2c3e50;
+      padding: 10px;
+    }
+    .toolbar button, .button-group button {
+      background: #34495e;
+      color: #fff;
+      border: none;
+      margin: 2px;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .toolbar button:hover, .button-group button:hover {
+      background: #1abc9c;
+    }
+    .button-group .active {
+      background: #16a085;
+    }
+    .editor-wrapper {
+      display: flex;
+      height: calc(100vh - 110px);
+    }
+    .line-numbers {
+      background: #ecf0f1;
+      padding: 10px;
+      text-align: right;
+      user-select: none;
+      color: #7f8c8d;
+    }
+    .editor-container {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    }
+    textarea#editor {
+      width: 50%;
+      padding: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      border: none;
+      resize: none;
+      outline: none;
+    }
+    .preview {
+      width: 50%;
+      padding: 10px;
+      background: #fff;
+      overflow-y: auto;
+      font-family: Arial, sans-serif;
+      border-left: 1px solid #ccc;
+    }

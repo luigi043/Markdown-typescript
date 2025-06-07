@@ -2,25 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Markdown typescript</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Markdown Editor</title>
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <!-- AOS Animation Library -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- JS Libraries -->
-  <script src="script.js" defer></script>
 </head>
-<body></body>
+<body>
 
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button onclick="insertTag('**', '**')"><i class="fa-solid fa-bold"></i></button>
+    <button onclick="insertTag('*', '*')"><i class="fa-solid fa-italic"></i></button>
+    <button onclick="insertTag('__', '__')"><i class="fa-solid fa-underline"></i></button>
+    <button onclick="insertTag('# ', '')"><i class="fa-solid fa-heading"></i> 1</button>
+    <button onclick="insertTag('## ', '')"><i class="fa-solid fa-heading"></i> 2</button>
+    <button onclick="insertTag('### ', '')"><i class="fa-solid fa-heading"></i> 3</button>
+    <button onclick="insertTag('- ', '')"><i class="fa-solid fa-list"></i></button>
+    <button onclick="insertTag('1. ', '')"><i class="fa-solid fa-list-ol"></i></button>
+    <button onclick="insertTag('- [ ] ', '')"><i class="fa-solid fa-check-square"></i></button>
+    <button onclick="insertTag('![alt text](image-url)', '')"><i class="fa-regular fa-image"></i></button>
+    <button onclick="insertTag('| Header | Header |\n| ------ | ------ |\n| Cell | Cell |', '')"><i class="fa-solid fa-table"></i></button>
+    <button onclick="insertTag('---', '')"><i class="fa-solid fa-ruler-horizontal"></i></button>
+    <button onclick="insertTag('```\n', '\n```')"><i class="fa-solid fa-code"></i></button>
+    <button onclick="insertTag('> ', '')"><i class="fa-solid fa-quote-left"></i></button>
+    <button onclick="toUppercase()"><i class="fa-solid fa-text-height"></i> UPPER</button>
+    <button onclick="toLowercase()"><i class="fa-solid fa-text-height"></i> lower</button>
+    <button onclick="insertTag('[link text](url)', '')"><i class="fa-solid fa-link"></i></button>
+    <button onclick="insertTag('😊', '')"><i class="fa-solid fa-face-smile"></i></button>
+    <button onclick="insertDateTime()"><i class="fa-solid fa-calendar-days"></i></button>
+    <button onclick="insertTag('&copy;', '')"><i class="fa-brands fa-html5"></i></button>
+    <button onclick="insertTag('<div style=\'page-break-after: always\'></div>', '')"><i class="fa-solid fa-ruler-horizontal"></i></button>
+    <button onclick="clearEditor()"><i class="fa-solid fa-broom"></i></button>
+    <button onclick="undoEdit()"><i class="fa-solid fa-rotate-left"></i></button>
+    <button onclick="redoEdit()"><i class="fa-solid fa-rotate-right"></i></button>
+  </div>
+
+  <!-- Mode Selector -->
+  <div class="button-group">
+    <button onclick="setMode('source')" id="btn-source" class="active"><i class="fa-solid fa-code"></i> Source</button>
+    <button onclick="setMode('preview')" id="btn-preview"><i class="fa-solid fa-eye"></i> Preview</button>
+    <button onclick="setMode('both')" id="btn-both"><i class="fa-solid fa-code-branch"></i> Both</button>
+  </div>
+
+  <!-- Editor Area -->
+  <div class="editor-wrapper">
+    <div class="line-numbers" id="lineNumbers"></div>
+    <div class="editor-container">
+      <textarea id="editor" oninput="updatePreview()" onscroll="syncScroll()"></textarea>
+      <div class="preview" id="preview" style="display: none;"></div>
+    </div>
+  </div>
+
+
+
+</body>
 </html>
