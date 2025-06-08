@@ -1,62 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Markdown Editor</title>
+
   <!-- Fonts and Icons -->
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
+  <!-- Markdown parsing library -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+  <!-- Custom CSS stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Custom JavaScript loaded with defer to run after HTML parsing -->
+  <script src="script.js" defer></script>
 </head>
+
 <body>
 
-  <!-- Toolbar -->
+  <!-- Toolbar with buttons to insert markdown syntax or perform actions -->
   <div class="toolbar">
-    <button onclick="insertTag('**', '**')"><i class="fa-solid fa-bold"></i></button>
-    <button onclick="insertTag('*', '*')"><i class="fa-solid fa-italic"></i></button>
-    <button onclick="insertTag('__', '__')"><i class="fa-solid fa-underline"></i></button>
-    <button onclick="insertTag('# ', '')"><i class="fa-solid fa-heading"></i> 1</button>
-    <button onclick="insertTag('## ', '')"><i class="fa-solid fa-heading"></i> 2</button>
-    <button onclick="insertTag('### ', '')"><i class="fa-solid fa-heading"></i> 3</button>
-    <button onclick="insertTag('- ', '')"><i class="fa-solid fa-list"></i></button>
-    <button onclick="insertTag('1. ', '')"><i class="fa-solid fa-list-ol"></i></button>
-    <button onclick="insertTag('- [ ] ', '')"><i class="fa-solid fa-check-square"></i></button>
-    <button onclick="insertTag('![alt text](image-url)', '')"><i class="fa-regular fa-image"></i></button>
-    <button onclick="insertTag('| Header | Header |\n| ------ | ------ |\n| Cell | Cell |', '')"><i class="fa-solid fa-table"></i></button>
-    <button onclick="insertTag('---', '')"><i class="fa-solid fa-ruler-horizontal"></i></button>
-    <button onclick="insertTag('```\n', '\n```')"><i class="fa-solid fa-code"></i></button>
-    <button onclick="insertTag('> ', '')"><i class="fa-solid fa-quote-left"></i></button>
-    <button onclick="toUppercase()"><i class="fa-solid fa-text-height"></i> UPPER</button>
-    <button onclick="toLowercase()"><i class="fa-solid fa-text-height"></i> lower</button>
-    <button onclick="insertTag('[link text](url)', '')"><i class="fa-solid fa-link"></i></button>
-    <button onclick="insertTag('😊', '')"><i class="fa-solid fa-face-smile"></i></button>
-    <button onclick="insertDateTime()"><i class="fa-solid fa-calendar-days"></i></button>
-    <button onclick="insertTag('&copy;', '')"><i class="fa-brands fa-html5"></i></button>
-    <button onclick="insertTag('<div style=\'page-break-after: always\'></div>', '')"><i class="fa-solid fa-ruler-horizontal"></i></button>
-    <button onclick="clearEditor()"><i class="fa-solid fa-broom"></i></button>
-    <button onclick="undoEdit()"><i class="fa-solid fa-rotate-left"></i></button>
-    <button onclick="redoEdit()"><i class="fa-solid fa-rotate-right"></i></button>
+    <!-- Bold text -->
+    <button onclick="insertTag('**', '**')" title="Bold">
+      <i class="fa-solid fa-bold"></i>
+    </button>
+    <!-- Italic text -->
+    <button onclick="insertTag('*', '*')" title="Italic">
+      <i class="fa-solid fa-italic"></i>
+    </button>
+    <!-- Underline text -->
+    <button onclick="insertTag('<u>', '</u>')" title="Underline">
+      <i class="fa-solid fa-underline"></i>
+    </button>
+    <!-- Heading level 1 -->
+    <button onclick="insertTag('# ', '')" title="Heading 1">
+      <i class="fa-solid fa-heading"></i> 1
+    </button>
+    <!-- Heading level 2 -->
+    <button onclick="insertTag('## ', '')" title="Heading 2">
+      <i class="fa-solid fa-heading"></i> 2
+    </button>
+    <!-- Heading level 3 -->
+    <button onclick="insertTag('### ', '')" title="Heading 3">
+      <i class="fa-solid fa-heading"></i> 3
+    </button>
+    <!-- Unordered list -->
+    <button onclick="insertTag('- ', '')" title="Unordered List">
+      <i class="fa-solid fa-list"></i>
+    </button>
+    <!-- Ordered list -->
+    <button onclick="insertTag('1. ', '')" title="Ordered List">
+      <i class="fa-solid fa-list-ol"></i>
+    </button>
+    <!-- Task list -->
+    <button onclick="insertTag('- [ ] ', '')" title="Task List">
+      <i class="fa-solid fa-check-square"></i>
+    </button>
+    <!-- Insert image syntax -->
+    <button onclick="insertTag('![alt text](image-url)', '')" title="Image">
+      <i class="fa-regular fa-image"></i>
+    </button>
+    <!-- Insert table syntax -->
+    <button onclick="insertTag('| Header | Header |\n| ------ | ------ |\n| Cell | Cell |', '')" title="Table">
+      <i class="fa-solid fa-table"></i>
+    </button>
+    <!-- Horizontal rule -->
+    <button onclick="insertTag('---', '')" title="Horizontal Rule">
+      <i class="fa-solid fa-ruler-horizontal"></i>
+    </button>
+    <!-- Code block -->
+    <button onclick="insertTag('```\n', '\n```')" title="Code Block">
+      <i class="fa-solid fa-code"></i>
+    </button>
+    <!-- Blockquote -->
+    <button onclick="insertTag('> ', '')" title="Blockquote">
+      <i class="fa-solid fa-quote-left"></i>
+    </button>
+    <!-- Convert selected text to uppercase -->
+    <button onclick="toUppercase()" title="Uppercase">
+      <i class="fa-solid fa-text-height"></i> UPPER
+    </button>
+    <!-- Convert selected text to lowercase -->
+    <button onclick="toLowercase()" title="Lowercase">
+      <i class="fa-solid fa-text-height"></i> lower
+    </button>
+    <!-- Insert link syntax -->
+    <button onclick="insertTag('[link text](url)', '')" title="Link">
+      <i class="fa-solid fa-link"></i>
+    </button>
+    <!-- Insert emoji -->
+    <button onclick="insertTag('😊', '')" title="Emoji">
+      <i class="fa-solid fa-face-smile"></i>
+    </button>
+    <!-- Insert current date and time -->
+    <button onclick="insertDateTime()" title="Insert DateTime">
+      <i class="fa-solid fa-calendar-days"></i>
+    </button>
+    <!-- Clear the editor content -->
+    <button onclick="clearEditor()" title="Clear Editor">
+      <i class="fa-solid fa-broom"></i>
+    </button>
   </div>
 
-  <!-- Mode Selector -->
+  <!-- Mode selector buttons to switch editor display -->
   <div class="button-group">
-    <button onclick="setMode('source')" id="btn-source" class="active"><i class="fa-solid fa-code"></i> Source</button>
-    <button onclick="setMode('preview')" id="btn-preview"><i class="fa-solid fa-eye"></i> Preview</button>
-    <button onclick="setMode('both')" id="btn-both"><i class="fa-solid fa-code-branch"></i> Both</button>
+    <!-- Show raw markdown source -->
+    <button onclick="setMode('source')" id="btn-source" class="active" title="Source">
+      <i class="fa-solid fa-code"></i> Source
+    </button>
+    <!-- Show rendered preview -->
+    <button onclick="setMode('preview')" id="btn-preview" title="Preview">
+      <i class="fa-solid fa-eye"></i> Preview
+    </button>
+    <!-- Show both source and preview -->
+    <button onclick="setMode('both')" id="btn-both" title="Both">
+      <i class="fa-solid fa-code-branch"></i> Both
+    </button>
   </div>
 
-  <!-- Editor Area -->
+  <!-- Main editor area containing line numbers, textarea, and preview -->
   <div class="editor-wrapper">
-    <div class="line-numbers" id="lineNumbers"></div>
     <div class="editor-container">
+      <!-- Line numbers synced with textarea lines -->
+      <div class="line-numbers" id="lineNumbers"></div>
+      <!-- Textarea for markdown input -->
       <textarea id="editor" oninput="updatePreview()" onscroll="syncScroll()"></textarea>
+      <!-- Preview area for rendered markdown, hidden by default -->
       <div class="preview" id="preview" style="display: none;"></div>
     </div>
   </div>
 
-
-
 </body>
+
 </html>
